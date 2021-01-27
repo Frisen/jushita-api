@@ -2,16 +2,21 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 
 	"github.com/nilorg/go-opentaobao"
 	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 func init() {
-	opentaobao.AppKey = "28293853"
-	opentaobao.AppSecret = "2e6d041383be62f877968635999369f4"
-	opentaobao.Session = "6100e2829efceeb2ba879f5201331fd02d711dada40c31a217101303"
-	opentaobao.Router = "http://gw.api.taobao.com/router/rest"
+	var c conf
+	con := c.getconf()
+	log.Println("appkey------>>>>>>", con.Session)
+	opentaobao.AppKey = con.AppKey
+	opentaobao.AppSecret = con.AppSecret
+	opentaobao.Session = con.Session
+	opentaobao.Router = con.Router
 }
 
 func main() {
@@ -23,17 +28,24 @@ func main() {
 		log.Println(err.Error())
 	}
 	fmt.Println("订单轨迹", res)
+}
 
-	// urlVaule := url.Values{}
-	// urlVaule.Add("sign", "FBA1B6E438B299A65CF0712B20FBB6CF")
-	// urlVaule.Add("timestamp", "2021-01-25 18:30:00")
-	// urlVaule.Add("v", "2.0")
-	// urlVaule.Add("method", "taobao.jds.trade.traces.get")
-	// urlVaule.Add("sign_method", "hmac")
-	// urlVaule.Add("tid", "1234139580066577")
-	// urlVaule.Add("force_sensitive_param_fuzzy", "true")
-	// urlVaule.Add("format", "json")
-	// resp, _ := http.PostForm("http://gw.api.taobao.com/router/rest", urlVaule)
-	// body, _ := ioutil.ReadAll(resp.Body)
-	//log.Println(string(body))
+type conf struct {
+	AppKey    string
+	AppSecret string
+	Session   string
+	Router    string
+}
+
+func (c *conf) getconf() *conf {
+	yamlFile, err := ioutil.ReadFile("conf.yaml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(string(yamlFile))
+	err = yaml.Unmarshal(yamlFile, c)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return c
 }
