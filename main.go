@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"jushita-api/config/route"
 
 	"github.com/nilorg/go-opentaobao"
 	log "github.com/sirupsen/logrus"
@@ -12,7 +13,6 @@ import (
 func init() {
 	var c conf
 	con := c.getconf()
-	log.Println("appkey------>>>>>>", con.Session)
 	opentaobao.AppKey = con.AppKey
 	opentaobao.AppSecret = con.AppSecret
 	opentaobao.Session = con.Session
@@ -20,6 +20,8 @@ func init() {
 }
 
 func main() {
+	r := route.InitRoute()
+	r.Run()
 	method := "taobao.jds.trade.traces.get"
 	res, err := opentaobao.Execute(method, opentaobao.Parameter{
 		"tid": "1234139580066577",
