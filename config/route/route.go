@@ -1,16 +1,27 @@
 package route
 
-import "github.com/gin-gonic/gin"
+import (
+	"jushita-api/app/controller"
 
-func InitRoute() *gin.Engine {
-	r := gin.Default()
-	order := r.Group("/order")
+	"github.com/gin-gonic/gin"
+)
+
+type Route struct {
+	Engine *gin.Engine
+}
+
+func (r *Route) Run() {
+	r.index()
+	r.order()
+}
+
+func (r *Route) index() {
+	r.Engine.Any("", new(controller.IndexController).Run)
+}
+
+func (r *Route) order() {
+	order := r.Engine.Group("order")
 	{
-		order.GET("/his", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "pong",
-			})
-		})
+		order.GET("trace", new(controller.OrderController).GetOrderHis)
 	}
-	return r
 }
