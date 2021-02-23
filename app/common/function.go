@@ -45,7 +45,6 @@ func GetOffset(page interface{}, limit int) int {
 
 func GetData(c *gin.Context) map[string]interface{} {
 	data, _ := c.Get("param")
-	fmt.Println("param----------------->", data)
 	return data.(map[string]interface{})
 }
 

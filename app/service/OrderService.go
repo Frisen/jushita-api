@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"jushita-api/config"
 	"log"
 
@@ -13,13 +14,13 @@ type OrderService struct {
 }
 
 func (s *OrderService) GetTraces(data map[string]interface{}) {
-	opentaobao.AppKey = config.GetValue("appkey").(string)
-	opentaobao.AppSecret = config.GetValue("appsecret").(string)
-	opentaobao.Session = config.GetValue("session").(string)
-	opentaobao.Router = config.GetValue("router").(string)
-	method := data["method"].(string)
+	opentaobao.AppKey = fmt.Sprintf("%v", config.GetValue("appkey"))
+	opentaobao.AppSecret = fmt.Sprintf("%v", config.GetValue("appsecret"))
+	opentaobao.Session = fmt.Sprintf("%v", config.GetValue("session"))
+	opentaobao.Router = fmt.Sprintf("%v", config.GetValue("router"))
+	method := fmt.Sprintf("%v", data["method"])
 	r, err := opentaobao.Execute(method, opentaobao.Parameter{
-		"tid": data["tid"].(string),
+		"tid": fmt.Sprintf("%v", data["tid"]),
 	})
 	if err != nil {
 		log.Println(err.Error())

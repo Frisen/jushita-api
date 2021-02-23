@@ -15,7 +15,7 @@ var DB *gorm.DB
 
 func GetValue(key string) interface{} {
 	dir, _ := os.Getwd()
-	filePath := path.Join(dir, "/config/config.yml")
+	filePath := path.Join(dir, "/conf.yml")
 	fileData, _ := ioutil.ReadFile(filePath)
 	var config map[interface{}]interface{}
 	yaml.Unmarshal(fileData, &config)

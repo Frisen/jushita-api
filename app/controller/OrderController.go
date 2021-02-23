@@ -13,20 +13,25 @@ type OrderController struct {
 	os      *service.OrderService
 }
 
-func (o *OrderController) GetOrderHis(c *gin.Context) {
-	o.display = &common.Display{Context: c}
-	o.data = common.GetData(c)
-	o.os = new(service.OrderService)
+func GetOrderHis(c *gin.Context) {
+	o := &OrderController{
+		display: &common.Display{Context: c},
+		data:    common.GetData(c),
+		os:      new(service.OrderService),
+	}
 	defer o.display.CatchPanic()
+
 	switch {
 	case o.data["method"] == "taobao.jds.trade.traces.get":
 		if o.data["tid"] != nil {
 			o.get()
 		}
 	}
+	o.display.Finish()
 }
 
 func (o *OrderController) get() {
 	o.os.GetTraces(o.data)
-	o.display.Show(o.os.Res)
+	// fmt.Println(*o.os.Res)
+	o.display.Show(*o.os.Res)
 }
