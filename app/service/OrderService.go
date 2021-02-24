@@ -5,12 +5,11 @@ import (
 	"jushita-api/config"
 	"log"
 
-	"github.com/bitly/go-simplejson"
 	"github.com/nilorg/go-opentaobao"
 )
 
 type OrderService struct {
-	Res *simplejson.Json
+	Res interface{}
 }
 
 func (s *OrderService) GetTraces(data map[string]interface{}) {
@@ -25,5 +24,5 @@ func (s *OrderService) GetTraces(data map[string]interface{}) {
 	if err != nil {
 		log.Println(err.Error())
 	}
-	s.Res = r
+	s.Res = r.Interface()
 }

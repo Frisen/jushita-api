@@ -32,6 +32,5 @@ func GetOrderHis(c *gin.Context) {
 
 func (o *OrderController) get() {
 	o.os.GetTraces(o.data)
-	// fmt.Println(*o.os.Res)
-	o.display.Show(*o.os.Res)
+	o.display.Show(o.os.Res)
 }

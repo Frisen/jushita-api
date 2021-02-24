@@ -1,7 +1,6 @@
 package common
 
 import (
-	"fmt"
 	"jushita-api/config"
 	"net/http"
 
@@ -43,7 +42,6 @@ func (j *JsonApi) Output(mix interface{}) {
 		j.Body.Msg = val
 		j.Body.Body = nil
 	} else {
-		fmt.Println(mix)
 		j.Body.Msg = message.GetMessage(j.Body.Status)
 		j.Body.Body = mix
 	}
